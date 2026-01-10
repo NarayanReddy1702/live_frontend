@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/auth/user",
+    baseUrl: "https://live-backend-0lz9.onrender.com/api/auth/user",
     credentials: "include",
   }),
   endpoints: (builder) => ({
@@ -67,7 +67,7 @@ export const userApi = createApi({
 
 export const sareeApi = createApi({
   reducerPath: "sareeApi",
-  baseQuery:fetchBaseQuery({ baseUrl: "http://localhost:8080/api/auth/saree",credentials: "include", }),
+  baseQuery:fetchBaseQuery({ baseUrl: "https://live-backend-0lz9.onrender.com/api/auth/saree",credentials: "include", }),
   endpoints: (builder) => ({
     getAllSaree: builder.query({
       query:()=>({
