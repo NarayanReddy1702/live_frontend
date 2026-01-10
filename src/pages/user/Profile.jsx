@@ -6,7 +6,7 @@ const Profile = () => {
     const user = JSON.parse(localStorage.getItem("userDet"))
     const navigate = useNavigate()
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center px-5 items-center min-h-screen ">
   <div style={{
   backgroundImage: "linear-gradient(to bottom right, black, #140a05, black)"
 }} className="bg-gray-900/70 backdrop-blur-xl  from-gray-900 via-gray-800 to-gray-950 p-4 rounded-2xl shadow-2xl w-full max-w-md  border border-gray-800">

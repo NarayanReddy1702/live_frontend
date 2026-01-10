@@ -65,7 +65,7 @@ const Navbar = () => {
         
       </div>
 
-      {/* Desktop Right */}
+     
       <div className="hidden md:flex items-center space-x-4">
         {(user && userDet)? (
           <>
@@ -127,10 +127,6 @@ const Navbar = () => {
           <div className="flex flex-col px-6 py-4 space-y-4">
             <NavLink to="/" onClick={() => setMenuOpen(false)}>
               Home
-            </NavLink>
-
-            <NavLink to="/product" onClick={() => setMenuOpen(false)}>
-              Product
             </NavLink>
 
             {user ? (
