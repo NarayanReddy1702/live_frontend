@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+.input {
+  @apply w-full px-4 py-2.5 border border-gray-300 rounded-lg 
+  focus:outline-none focus:ring-2 focus:ring-black focus:border-black 
+  text-gray-800;
+}
+
+.label {
+  @apply block mb-1 text-sm font-medium text-gray-700;
+}
+
+.file-input {
+  @apply w-full px-3 py-2 border border-dashed border-gray-300 rounded-lg 
+  cursor-pointer bg-gray-50 hover:bg-gray-100;
+}
+
+.helper-text {
+  @apply text-xs text-gray-500 mt-1;
+}
