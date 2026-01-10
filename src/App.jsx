@@ -18,6 +18,8 @@ import AllItems from "./pages/admin/AllItems";
 import AddItems from "./pages/admin/AddItems";
 import AdminEdit from "./pages/admin/AdminEdit";
 import OrderList from "./pages/user/OrderList";
+import ViewDetails from "./pages/user/ViewDetails";
+import UpdateUser from "./pages/user/UpdateUser";
 
 
 
@@ -34,7 +36,9 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/orders" element={<OrderList/>} />
-      </Route>
+        <Route path="/viewDet/:id" element={<ViewDetails/>}  />
+        <Route path="/updateUser/:id" element={<UpdateUser/>}/>    
+          </Route>
 
      
       <Route element={<AuthMiddleware />}>

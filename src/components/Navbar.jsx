@@ -15,7 +15,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { user, setToken, setUser } = useContext(AuthContext);
     const [menuOpen, setMenuOpen] = useState(false);
- 
+ const userDet =localStorage.getItem("userDet")
 
   const handleLogout = async () => {
     try {
@@ -67,7 +67,7 @@ const Navbar = () => {
 
       {/* Desktop Right */}
       <div className="hidden md:flex items-center space-x-4">
-        {user ? (
+        {(user && userDet)? (
           <>
             <NavLink to="/orders" className="text-gray-700 hover:text-red-500">
               <MdOutlineShoppingCart size={24} />

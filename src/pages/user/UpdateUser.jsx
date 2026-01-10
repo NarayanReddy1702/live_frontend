@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useGetOneUserQuery, useUpdateAuthMutation } from "../../redux/state";
+import {
+  useGetOneUserQuery,
+  useUpdateAuthMutation,
+} from "../../redux/state";
 
-const AdminEdit = () => {
+const UpdateUser = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const loggedUser = JSON.parse(localStorage.getItem("userDet"));
+  const loggedUser = JSON.parse(localStorage.getItem("userDet") || "null");
 
-  const { data, isLoading } = useGetOneUserQuery(id);
-
+  const { data, isLoading, isError } = useGetOneUserQuery(id);
   const [updateUser, { isLoading: updating }] = useUpdateAuthMutation();
 
   const [formData, setFormData] = useState({
@@ -21,26 +23,23 @@ const AdminEdit = () => {
   });
 
   useEffect(() => {
-    if (data?.success) {
-      console.log(data?.userDet)
+    if (data?.success && data?.userDet) {
       setFormData({
-        fullName: data.userDet?.fullName || "",
-        email: data.userDet?.email || "",
-        role: data.userDet?.role || "",
-        gender: data.userDet?.gender || "",
+        fullName: data.userDet.fullName || "",
+        email: data.userDet.email || "",
+        role: data.userDet.role || "",
+        gender: data.userDet.gender || "",
       });
     }
   }, [data]);
 
-  // ✅ Handle input change
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
-  // ✅ Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -49,18 +48,16 @@ const AdminEdit = () => {
         data: formData,
       }).unwrap();
 
-      if (res.success) {
-        toast.success(res.message);
+      toast.success(res.message);
 
-        // ✅ Update localStorage if self update
-        if (loggedUser?._id === id) {
-          localStorage.setItem("userDet", JSON.stringify(res.user));
-        }
-
-        navigate("/admin");
+      // update localStorage if self profile updated
+      if (loggedUser?._id === id) {
+        localStorage.setItem("userDet", JSON.stringify(res.user));
       }
+
+      navigate("/admin");
     } catch (error) {
-      toast.error("Failed to update user");
+      toast.error(error?.data?.message || "Failed to update user");
     }
   };
 
@@ -68,11 +65,19 @@ const AdminEdit = () => {
     return <p className="text-center mt-10">Loading...</p>;
   }
 
+  if (isError) {
+    return (
+      <p className="text-center mt-10 text-red-500">
+        Failed to load user data
+      </p>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-3xl">
         <h3 className="text-2xl font-semibold mb-6 text-center">
-          Edit Admin Details
+          Edit User Details
         </h3>
 
         <form
@@ -86,6 +91,7 @@ const AdminEdit = () => {
               value={formData.fullName}
               onChange={handleChange}
               className="input"
+              required
             />
           </div>
 
@@ -93,18 +99,21 @@ const AdminEdit = () => {
             <label className="block font-medium mb-1">Email</label>
             <input
               name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
               className="input"
+              required
             />
           </div>
 
           <div>
             <label className="block font-medium mb-1">Role</label>
             <input
+              name="role"
               value={formData.role}
               disabled
-              className="input bg-gray-100"
+              className="input bg-gray-100 cursor-not-allowed"
             />
           </div>
 
@@ -115,16 +124,16 @@ const AdminEdit = () => {
               value={formData.gender}
               onChange={handleChange}
               className="input"
+              required
             >
               <option value="">Select</option>
               <option value="Male">Male</option>
-              <option value="female">Female</option>
+              <option value="Female">Female</option>
             </select>
           </div>
 
           <div className="col-span-2 flex justify-center gap-4 mt-6">
             <button
-          
               type="button"
               onClick={() => navigate("/admin")}
               className="bg-black px-5 cursor-pointer py-2 rounded text-white font-semibold"
@@ -133,10 +142,12 @@ const AdminEdit = () => {
             </button>
 
             <button
-             
+              type="submit"
               disabled={updating}
              className="bg-blue-600 cursor-pointer px-5 py-2 rounded text-white font-semibold"
-            >submit</button>
+            >
+              {updating ? "Saving..." : "Save Changes"}
+            </button>
           </div>
         </form>
       </div>
@@ -144,4 +155,4 @@ const AdminEdit = () => {
   );
 };
 
-export default AdminEdit;
+export default UpdateUser;

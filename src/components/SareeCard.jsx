@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useDoLikeMutation, useOrderSareeMutation } from "../redux/state";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const SareeCard = ({item}) => {
   
   const [likes, setLikes] = useState(item.like.length || 0);
   const [addCard]=useDoLikeMutation()
+  const navigate = useNavigate()
 
   const handleLike = async  (sareeId) => {
     console.log(sareeId)
@@ -54,9 +56,14 @@ const handlePopulate = (id) => {
 };
 
 
+const handleViewDet=(id)=>{
+  console.log(id)
+  navigate(`/viewDet/${id}`)
+}
+
   console.log(item)
   return (
-    <div className="group relative w-70 bg-white rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
+    <div onClick={()=>handleViewDet(item._id)} className="group relative w-70 bg-white rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
 
       {/* IMAGE */}
       <img

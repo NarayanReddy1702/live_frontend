@@ -22,7 +22,7 @@ function AdminDashboard() {
 
   const handleLogout = () => {
     localStorage.removeItem("userDet");
-    localStorage.removeItem("userToken");
+    localStorage.removeItem("token");
     localStorage.removeItem("role");
     toast.success("Admin Logout Successfully!");
     setTimeout(() => {
