@@ -32,26 +32,13 @@ const SareeCard = ({item}) => {
 
  const [order] = useOrderSareeMutation();
 
-const handlePopulate = (id) => {
+const handlePopulate = async (id) => {
   console.log(id)
   try {
-    const userDet = localStorage.getItem("userDet"); // get from storage
-    if (!userDet) return console.error("User not found");
-
-    const { _id } = JSON.parse(userDet);
-    console.log("User ID:", _id);
-
-    // Call the mutation with saree id and userId
-    order({ id, userId: _id })
-      .unwrap()
-      .then((res) => {
-        console.log("Cart updated:", res.cart);
-      })
-      .catch((err) => {
-        console.error("Error adding to cart:", err);
-      });
-  } catch (error) {
-    console.error("Parsing error:", error);
+    const res = await order(id).unwrap();
+    toast.success(res.message || "Added to cart successfully");
+  } catch (err) {
+    toast.error(err?.data?.message || "Failed to add to cart");
   }
 };
 

@@ -64,18 +64,15 @@ export const userApi = createApi({
     }),
 
     OrderSaree: builder.mutation({
-      query: ({ id, userId }) => ({
+      query: (id) => ({
         url: "/order",
         method: "PUT",
-        body: { id, userId },
+        body: { sareeId: id },
       }),
       invalidatesTags: ["Sarees"],
     }),
   }),
 });
-
-
-
 
 export const sareeApi = createApi({
   reducerPath: "sareeApi",
@@ -119,15 +116,10 @@ export const sareeApi = createApi({
         method: "PUT",
         body: { sareeId },
       }),
-      invalidatesTags: (result, error, sareeId) => [
-        { type: "Saree", id: sareeId },
-        "Sarees",
-      ],
+      invalidatesTags:["Sarees"]
     }),
   }),
 });
-
-
 
 export const {
   useRegisterMutation,
@@ -137,7 +129,13 @@ export const {
   useDeleteUserMutation,
   useGetOneUserQuery,
   useUpdateAuthMutation,
-  useOrderSareeMutation
+  useOrderSareeMutation,
 } = userApi;
 
-export const {useGetAllSareeQuery ,useAddItemMutation,useDeleteCardMutation,useDoLikeMutation,useGetACardQuery} = sareeApi;
+export const {
+  useGetAllSareeQuery,
+  useAddItemMutation,
+  useDeleteCardMutation,
+  useDoLikeMutation,
+  useGetACardQuery,
+} = sareeApi;
