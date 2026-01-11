@@ -63,10 +63,11 @@ const handleViewDet=(id)=>{
 
   console.log(item)
   return (
-    <div onClick={()=>handleViewDet(item._id)} className="group relative w-70 bg-white rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
+    <div  className="group relative w-70 bg-white rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
 
       {/* IMAGE */}
       <img
+      onClick={()=>handleViewDet(item._id)}
         src={item.thumbline}
         alt="Saree"
         className="w-full h-95 object-cover"
