@@ -45,7 +45,6 @@ const AdminProfile = () => {
     {/* Info Section */}
     <div className="flex flex-col items-center gap-2 text-gray-300 text-sm">
       <p><span className="font-semibold text-orange-400">Role:</span> {user.role}</p>
-      <p><span className="font-semibold text-orange-400">Gender:</span> {user.gender}</p>
     </div>
 
     {/* Action Buttons */}

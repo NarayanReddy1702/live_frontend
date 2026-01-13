@@ -15,8 +15,7 @@ const AdminEdit = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    role: "",
-    gender: "",
+    role: ""
   });
 
   useEffect(() => {
@@ -25,7 +24,6 @@ const AdminEdit = () => {
         fullName: data.userDet?.fullName || "",
         email: data.userDet?.email || "",
         role: data.userDet?.role || "",
-        gender: data.userDet?.gender || "",
       });
     }
   }, [data]);
@@ -97,20 +95,6 @@ const AdminEdit = () => {
             />
           </div>
 
-          {/* Gender */}
-          <div>
-            <label className="block font-medium mb-1">Gender</label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="input w-full"
-            >
-              <option value="">Select</option>
-              <option value="Male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
 
           {/* Buttons */}
           <div className="col-span-1 md:col-span-2 flex flex-col sm:flex-row justify-center gap-4 mt-6">

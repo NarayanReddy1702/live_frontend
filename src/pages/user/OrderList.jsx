@@ -48,7 +48,7 @@ export default function OrderList() {
   return (
    <div className="max-w-6xl mx-auto p-6">
     <h1 className="text-center pb-10 font-semibold text-2xl">OrderList</h1>
-  <div className="grid grid-cols-1  md:grid-cols-2 gap-8">
+ {orderDet.length>0?( <div className="grid grid-cols-1  md:grid-cols-2 gap-8">
     {orderDet.map((item) => (
       <div
         key={item._id}
@@ -132,7 +132,7 @@ export default function OrderList() {
         </div>
       </div>
     ))}
-  </div>
+  </div>):<div className=" shadow-md rounded-md"><h1 className="text-center p-10 ">These is no OrderList yet !</h1></div>}
 </div>
 
 

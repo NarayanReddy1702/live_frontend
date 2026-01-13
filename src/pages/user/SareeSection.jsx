@@ -16,17 +16,17 @@ const SareeSection = () => {
   const [filteredCards, setFilteredCards] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const { data, isLoading, error } = useGetAllSareeQuery();
+const { data: sarees,isLoading,error } = useGetAllSareeQuery();
 
-  // ✅ Fetch data once
+
+ 
   useEffect(() => {
-    if (data?.success) {
-      setAllCards(data.saree || []);
-      setFilteredCards(data.saree || []);
+    if (sarees?.success) {
+      setAllCards(sarees.saree || []);
+      setFilteredCards(sarees.saree || []);
     }
-  }, [data]);
+  }, [sarees]);
 
-  // ✅ Filter when category changes
   useEffect(() => {
     if (activeCategory === "All") {
       setFilteredCards(allCards);
@@ -49,7 +49,7 @@ const SareeSection = () => {
 
   <div className="flex flex-col md:flex-row gap-6 md:gap-8">
 
-    {/* CATEGORY LIST */}
+
     <div className="
       flex md:flex-col
       overflow-x-auto md:overflow-visible
@@ -76,7 +76,6 @@ const SareeSection = () => {
       ))}
     </div>
 
-    {/* SAREE CARDS */}
    <div
   className="
     grid

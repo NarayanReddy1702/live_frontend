@@ -108,18 +108,16 @@ export const sareeApi = createApi({
 
   endpoints: (builder) => ({
     getAllSaree: builder.query({
-      query: () => "/getAllCards",
-      providesTags: (result) =>
-        result?.saree
-          ? [
-              ...result.saree.map(({ _id }) => ({
-                type: "Saree",
-                id: _id,
-              })),
-              "Sarees",
-            ]
-          : ["Sarees"],
-    }),
+  query: () => "/getAllCards",
+  providesTags: (result) =>
+    result
+      ? [
+          ...result.saree.map(({ _id }) => ({ type: "Saree", id: _id })),
+          "Sarees",
+        ]
+      : ["Sarees"],
+}),
+
 
     getACard: builder.query({
       query: (id) => `/getACard/${id}`,
@@ -147,16 +145,17 @@ export const sareeApi = createApi({
     }),
 
     doLike: builder.mutation({
-      query: (sareeId) => ({
-        url: "/doLike",
-        method: "PUT",
-        body: { sareeId },
-      }),
-      invalidatesTags: (result, error, sareeId) => [
-        { type: "Saree", id: sareeId },
-        "Sarees",
-      ],
-    }),
+  query: (sareeId) => ({
+    url: "/doLike",
+    method: "PUT",
+    body: { sareeId },
+  }),
+  invalidatesTags: (result, error, sareeId) => [
+    { type: "Saree", id: sareeId },
+    "Sarees",
+  ],
+}),
+
   }),
 });
 

@@ -3,61 +3,61 @@ import { useDoLikeMutation, useOrderSareeMutation } from "../redux/state";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const SareeCard = ({item}) => {
-  
+const SareeCard = ({ item }) => {
   const [likes, setLikes] = useState(item.like.length || 0);
-  const [addCard]=useDoLikeMutation()
-  const navigate = useNavigate()
+  const [addCard] = useDoLikeMutation();
+  const navigate = useNavigate();
 
-  const handleLike = async  (sareeId) => {
-    console.log(sareeId)
+  const handleLike = async (sareeId) => {
+    console.log(sareeId);
     try {
-    const res = await addCard(sareeId).unwrap();
-    setLikes(item.like.length)
-    if (res.success) {
-      toast.success(res.message);
-      console.log(res.sareeItem);
-    } else {
-      toast.error(res.message || "Failed to do Like");
+      const res = await addCard(sareeId).unwrap();
+
+      if (res.success) {
+        toast.success(res.message);
+        console.log(res.sareeItem);
+        setLikes(item.like.length);
+        navigate(0);
+      } else {
+        toast.error(res.message || "Failed to do Like");
+      }
+    } catch (err) {
+      const message =
+        err?.data?.message ||
+        err?.error ||
+        err?.message ||
+        "Something went wrong";
+      toast.error(message);
     }
-  } catch (err) {
-    const message =
-      err?.data?.message ||
-      err?.error ||
-      err?.message ||
-      "Something went wrong";
-    toast.error(message);
-  }
   };
 
-  useEffect(()=>{
-    setLikes(likes)
-  },[likes])
- const [order] = useOrderSareeMutation();
+  const [order] = useOrderSareeMutation();
 
-const handlePopulate = async (id) => {
-  console.log(id)
-  try {
-    const res = await order(id).unwrap();
-    toast.success(res.message || "Added to cart successfully");
-  } catch (err) {
-    toast.error(err?.data?.message || "Failed to add to cart");
-  }
-};
+  const handlePopulate = async (id) => {
+    console.log(id);
+    try {
+      const res = await order(id).unwrap();
+      if(res.success){
+      toast.success(res.message || "Added to cart successfully");
+      }else{
+        toast.error(res.message)
+      }
+    } catch (err) {
+      toast.error(err?.res?.message || "Failed to add to cart");
+    }
+  };
 
+  const handleViewDet = (id) => {
+    console.log(id);
+    navigate(`/viewDet/${id}`);
+  };
 
-const handleViewDet=(id)=>{
-  console.log(id)
-  navigate(`/viewDet/${id}`)
-}
-
-  console.log(item)
+  console.log(item);
   return (
-    <div  className="group relative w-70 bg-white rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
-
+    <div className="group relative w-70 bg-white rounded-xl overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
       {/* IMAGE */}
       <img
-      onClick={()=>handleViewDet(item._id)}
+        onClick={() => handleViewDet(item._id)}
         src={item.thumbline}
         alt="Saree"
         className="w-full h-95 object-cover"
@@ -65,7 +65,7 @@ const handleViewDet=(id)=>{
 
       {/* HEART WITH COUNT */}
       <button
-        onClick={()=>handleLike(item._id)}
+        onClick={() => handleLike(item._id)}
         className="absolute top-4 right-4 bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-md z-10 hover:scale-110 transition-transform"
       >
         <span className="text-lg">❤️</span>
@@ -88,23 +88,24 @@ const handleViewDet=(id)=>{
           shadow-[0_-12px_25px_rgba(0,0,0,0.15)]
         "
       >
-        <h3 className="text-sm font-semibold text-gray-100">
-          {item.title}
-        </h3>
+        <h3 className="text-sm font-semibold text-gray-100">{item.title}</h3>
 
-        <p className="text-xs text-gray-500 mt-1">
-          {item.description}
-        </p>
+        <p className="text-xs text-gray-300 mt-1">{item.description}</p>
 
         <div className="flex items-center justify-between mt-3">
           <div>
-            <span className="text-lg font-bold text-[#e0531f]">{item.price}</span>
-            <span className="text-xs text-gray-400 line-through ml-2">
+            <span className="text-lg font-bold text-orange-500">
+              {item.price}
+            </span>
+            <span className="text-xs text-gray-300 line-through ml-2">
               ₹4,599
             </span>
           </div>
 
-          <button onClick={()=>handlePopulate(item._id)} className="bg-[#e0531f] z-50 cursor-pointer hover:bg-[#c74718] text-white text-xs px-4 py-2 rounded-lg transition">
+          <button
+            onClick={() => handlePopulate(item._id)}
+            className="bg-[#e0531f] z-50 cursor-pointer hover:bg-[#c74718] text-white text-xs px-4 py-2 rounded-lg transition"
+          >
             Add To Cart
           </button>
         </div>

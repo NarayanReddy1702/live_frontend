@@ -10,7 +10,6 @@ const Register = () => {
     fullName: "",
     email: "",
     password: "",
-    gender: "",
     role: "",
   });
 
@@ -30,7 +29,6 @@ const Register = () => {
         fullName: "",
         email: "",
         password: "",
-        gender: "",
         role:""
       });
       setTimeout(()=>{
@@ -99,23 +97,7 @@ const Register = () => {
           />
 
           {/* Gender */}
-          <select
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 rounded-xl bg-white/20 text-white border border-white/30 focus:ring-2 focus:ring-[#e0531f]"
-          >
-            <option value="" className="text-black">
-              Select Gender
-            </option>
-            <option value="Male" className="text-black">
-              Male
-            </option>
-            <option value="Female" className="text-black">
-              Female
-            </option>
-          </select>
+        
           <select
             name="role"
             value={formData.role}

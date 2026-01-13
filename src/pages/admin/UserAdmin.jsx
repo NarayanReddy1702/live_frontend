@@ -72,7 +72,6 @@ const UserAdmin = () => {
                     <th className="px-6 py-3 text-left">SI No</th>
                     <th className="px-6 py-3 text-left">FullName</th>
                     <th className="px-6 py-3 text-left">Email</th>
-                    <th className="px-6 py-3 text-left">Gender</th>
                     <th className="px-6 py-3 text-left">Role</th>
                     <th className="px-6 py-3 text-center">Actions</th>
                   </tr>
@@ -87,7 +86,6 @@ const UserAdmin = () => {
                       <td className="px-6 py-4">{index + 1}</td>
                       <td className="px-6 py-4 font-medium">{user.fullName}</td>
                       <td className="px-6 py-4">{user.email}</td>
-                      <td className="px-6 py-4">{user.gender}</td>
                       <td className="px-6 py-4">
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold ${

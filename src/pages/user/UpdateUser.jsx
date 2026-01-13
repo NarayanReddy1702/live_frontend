@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   useGetOneUserQuery,
   useUpdateAuthMutation,
 } from "../../redux/state";
+import { AuthContext } from "../../utils/AuthContext";
 
 const UpdateUser = () => {
   const navigate = useNavigate();
@@ -14,12 +15,11 @@ const UpdateUser = () => {
 
   const { data, isLoading, isError } = useGetOneUserQuery(id);
   const [updateUser, { isLoading: updating }] = useUpdateAuthMutation();
-
+const { user, setToken, setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     role: "",
-    gender: "",
   });
 
   useEffect(() => {
@@ -28,7 +28,6 @@ const UpdateUser = () => {
         fullName: data.userDet.fullName || "",
         email: data.userDet.email || "",
         role: data.userDet.role || "",
-        gender: data.userDet.gender || "",
       });
     }
   }, [data]);
@@ -48,8 +47,11 @@ const UpdateUser = () => {
         data: formData,
       }).unwrap();
 
-      toast.success(res.message);
-
+     if(res.success){
+       toast.success(res.message);
+      localStorage.setItem("userDet",JSON.stringify(res.user))
+      setUser(res.user)
+     }
       if (loggedUser?._id === id) {
         localStorage.setItem("userDet", JSON.stringify(res.user));
       }
@@ -117,21 +119,6 @@ const UpdateUser = () => {
             />
           </div>
 
-          {/* Gender */}
-          <div className="w-full">
-            <label className="block font-medium mb-1">Gender</label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="input w-full"
-              required
-            >
-              <option value="">Select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
 
           {/* Buttons */}
           <div className="col-span-1 sm:col-span-2 flex flex-col sm:flex-row justify-center gap-4 mt-6">

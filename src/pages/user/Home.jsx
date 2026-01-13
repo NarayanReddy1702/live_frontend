@@ -68,7 +68,7 @@ const Home = () => {
 </section>
 
 
-      {/* SAREE SECTION */}
+    
       <SareeSection />
     </>
   );
