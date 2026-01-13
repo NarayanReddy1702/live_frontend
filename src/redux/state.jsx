@@ -94,6 +94,14 @@ export const userApi = createApi({
            method:"PUT",
            body:{sareeId}
          })
+    }),
+    uploadProfile:builder.mutation({
+      query:(Profile)=>({
+        url:"/uploadProfile",
+        method:"PUT",
+        body:Profile
+      }),
+       invalidatesTags:["User"]
     })
   }),
 });
@@ -169,7 +177,8 @@ export const {
   useGetOneUserQuery,
   useUpdateAuthMutation,
   useOrderSareeMutation,
-  useRemoverOrderListMutation
+  useRemoverOrderListMutation,
+  useUploadProfileMutation
 } = userApi;
 
 export const {

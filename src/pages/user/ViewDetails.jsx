@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetACardQuery, useOrderSareeMutation } from "../../redux/state";
 import toast from "react-hot-toast";
+import Loader from "../../components/Loader";
 
 const ViewDetails = () => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ const ViewDetails = () => {
 
 
   if (isLoading) {
-    return <div className="text-center py-10">Loading...</div>;
+    return <Loader/>;
   }
 
   if (isError) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SareeCard from "../../components/SareeCard";
 import { useGetAllSareeQuery } from "../../redux/state";
+import Loader from "../../components/Loader";
 
 const SareeSection = () => {
   const categories = [
@@ -38,7 +39,7 @@ const { data: sarees,isLoading,error } = useGetAllSareeQuery();
     }
   }, [activeCategory, allCards]);
 
-  if (isLoading) return <p className="text-center">Loading...</p>;
+  if (isLoading) return <Loader/>;
   if (error) return <p className="text-center text-red-500">Error loading sarees</p>;
 
   return (

@@ -1,72 +1,122 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../utils/AuthContext";
+import { useUploadProfileMutation } from "../../redux/state";
 
 const AdminProfile = () => {
-
-    const user = JSON.parse(localStorage.getItem("userDet"))
-    const navigate = useNavigate()
-  return (
-    <div className="flex justify-center  px-5 items-center min-h-screen ">
-  <div style={{
-  backgroundImage: "linear-gradient(to bottom right, black, #140a05, black)"
-}} className="bg-gray-900/70 backdrop-blur-xl  from-gray-900 via-gray-800 to-gray-950 p-4 rounded-2xl shadow-2xl w-full max-w-md  border border-gray-800">
-    {/* Profile Header */}
-    <div className="flex flex-col items-center">
-      <div className="relative">
-        <img
-          src={user.ProfilePic}
-          alt="User Avatar"
-          className="w-32 h-32 rounded-full border-4 border-orange-500 shadow-lg object-cover"
-        />
-        <div className="absolute bottom-2 right-2 bg-orange-500 p-2 rounded-full shadow-md hover:scale-105 transition">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13h3l8-8a2.121 2.121 0 10-3-3l-8 8v3z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M16 21H4a1 1 0 01-1-1v-4a1 1 0 011-1h4" />
-          </svg>
-        </div>
+ const user = JSON.parse(localStorage.getItem("userDet"));
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const [profileDet]=useUploadProfileMutation()
+   const { setUser } = useContext(AuthContext);
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-400">
+        User not found
       </div>
+    );
+  }
 
-      <h2 className="text-2xl font-bold mt-4 text-white tracking-wide">
-        {user.fullName}
-      </h2>
-      <p className="text-gray-400 text-sm mt-1">{user.email}</p>
-    </div>
+  
+  const handleEditClick = () => {
+    fileInputRef.current.click();
+  };
 
-    {/* Divider */}
-    <div className="w-full border-t border-gray-700 my-6"></div>
+ const handleFileChange = async (e) => {
+  try {
+    const file = e.target.files[0];
+    if (!file) return;
 
-    {/* Info Section */}
-    <div className="flex flex-col items-center gap-2 text-gray-300 text-sm">
-      <p><span className="font-semibold text-orange-400">Role:</span> {user.role}</p>
-    </div>
+    const formData = new FormData();
+    formData.append("ProfilePic", file); // MUST MATCH multer field
 
-    {/* Action Buttons */}
-    <div className="flex flex-col md:flex-row gap-4 mt-8">
-      <button
-        onClick={() => navigate(`/updateUser/${user._id}`)}
-        className="flex-1 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-lg font-semibold shadow-md transition"
-      >
-        Edit Profile
-      </button>
-
-      <button
-        onClick={() => navigate("/")}
-        className="flex-1 cursor-pointer bg-gray-700 hover:bg-gray-600 text-white py-2.5 rounded-lg font-semibold shadow-md transition"
-      >
-        Back to Home
-      </button>
-    </div>
-  </div>
-</div>
-
-  );
+    const res = await profileDet(formData).unwrap();
+    
+    if (res.success) {
+      console.log(res.user)
+      setUser(res?.user)
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to Update Profile");
+  }
 };
 
+
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gray-100">
+      <div
+        style={{
+          backgroundImage:
+            "linear-gradient(to bottom right, #0f0f0f, #1a0b05, #0f0f0f)",
+        }}
+        className="w-full max-w-md rounded-2xl border border-white/10 shadow-2xl backdrop-blur-xl p-6"
+      >
+
+        <div className="flex flex-col items-center">
+          <div className="relative">
+            <img
+              src={user.ProfilePic}
+              alt="Profile"
+              className="w-28 h-28 rounded-full object-cover
+              border-4 border-orange-500 shadow-lg"
+            />
+
+            <button
+              onClick={handleEditClick}
+              className="absolute bottom-1 right-1 cursor-pointer
+              bg-orange-500 hover:bg-orange-600 transition
+              text-white p-2 rounded-full shadow-md"
+              title="Edit Profile Picture"
+            >
+              ✎
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </div>
+
+          <h2 className="mt-4 text-xl font-semibold text-white tracking-wide">
+            {user.fullName}
+          </h2>
+          <p className="text-sm text-gray-400">{user.email}</p>
+        </div>
+
+        <div className="border-t border-white/10 my-6"></div>
+
+        <div className="text-center text-sm text-gray-300 space-y-1">
+          <p>
+            <span className="text-orange-400 font-medium">Role:</span>{" "}
+            {user.role}
+          </p>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-3">
+          <button
+            onClick={() => navigate(`/updateUser/${user._id}`)}
+            className="cursor-pointer w-full bg-orange-500 hover:bg-orange-600
+            text-white py-2.5 rounded-lg font-semibold transition"
+          >
+            Edit Profile
+          </button>
+
+          <button
+            onClick={() => navigate("/")}
+            className="cursor-pointer w-full bg-white/10 hover:bg-white/20
+            text-white py-2.5 rounded-lg font-semibold transition"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 export default AdminProfile;

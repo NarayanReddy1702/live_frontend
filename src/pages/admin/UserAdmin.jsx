@@ -3,21 +3,19 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDeleteUserMutation, useGetAllUsersQuery } from '../../redux/state';
-
-
-const BASE_URL = "YOUR_API_BASE_URL"; // replace with your API base
+import Loader from '../../components/Loader';
 
 const UserAdmin = () => {
   const navigate = useNavigate();
   const [allUser, setAllUser] = useState([]);
 
-  // RTK Query hook
+
   const { data, isLoading, error } = useGetAllUsersQuery();
   const [deleteUser]=useDeleteUserMutation()
   useEffect(() => {
     if (data) {
       if (data.success) {
-        setAllUser(data.users || []); // set your users array
+        setAllUser(data.users || []);
         console.log("Fetched user data successfully!");
       } else {
         console.log("Failed to fetch user data");
@@ -53,7 +51,7 @@ const UserAdmin = () => {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center py-10">Loading users...</div>;
+    return <Loader/>;
   }
 
   return (

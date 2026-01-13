@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGetOneUserQuery, useRemoverOrderListMutation } from "../../redux/state";
 import toast from "react-hot-toast"
+import Loader from "../../components/Loader";
 
 export default function OrderList() {
   const [size, setSize] = useState("M");
@@ -40,7 +41,7 @@ export default function OrderList() {
 };
 
 
-  if (isLoading || loading) return <p className="text-center">Loading orders...</p>;
+  if (isLoading || loading) return <Loader/>;
   if (error || isError) return <p className="text-center text-red-500">Failed to load orders</p>;
 
 

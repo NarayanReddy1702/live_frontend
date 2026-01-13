@@ -47,11 +47,11 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`w-full bg-white z-50 px-5 py-3 flex items-center justify-between
+      className={`w-full bg-white z-50 px-5  flex  items-center justify-between
       ${fixed ? "fixed top-0 shadow-md" : "sticky top-0"}`}
     >
       
-      <img src="" alt="" />
+      <img className="w-20" src="./logo.png" alt="" />
       {/* DESKTOP MENU */}
       <div className="hidden md:flex items-center gap-6">
         {user && userDet ? (

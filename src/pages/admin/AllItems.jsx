@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useDeleteCardMutation, useGetAllSareeQuery } from "../../redux/state";
 import toast from "react-hot-toast";
+import Loader from "../../components/Loader";
 
 const UserAdmin = () => {
   const navigate = useNavigate();
@@ -58,9 +59,7 @@ const UserAdmin = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-10">
-        Loading users...
-      </div>
+      <Loader/>
     );
   }
 
