@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDoLikeMutation, useOrderSareeMutation } from "../redux/state";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,9 @@ const SareeCard = ({item}) => {
   }
   };
 
+  useEffect(()=>{
+    setLikes(likes)
+  },[likes])
  const [order] = useOrderSareeMutation();
 
 const handlePopulate = async (id) => {

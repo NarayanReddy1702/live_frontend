@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetACardQuery, useOrderSareeMutation } from "../../redux/state";
+import toast from "react-hot-toast";
 
 const ViewDetails = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const ViewDetails = () => {
     }
   }, [saree]);
 
-  // ✅ SAFE RETURNS AFTER HOOKS
+
   if (isLoading) {
     return <div className="text-center py-10">Loading...</div>;
   }
@@ -35,23 +36,15 @@ const ViewDetails = () => {
     setThumbline(img);
   };
 
-  const handlePopulate = async (sareeId) => {
-    try {
-      const userDet = localStorage.getItem("userDet");
-      if (!userDet) return console.error("User not found");
-
-      const { _id } = JSON.parse(userDet);
-
-      const res = await order({
-        id: sareeId,
-        userId: _id,
-      }).unwrap();
-
-      console.log("Cart updated:", res.cart);
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-    }
-  };
+ const handlePopulate = async (id) => {
+  console.log(id)
+  try {
+    const res = await order(id).unwrap();
+    toast.success(res.message || "Added to cart successfully");
+  } catch (err) {
+    toast.error(err?.data?.message || "Failed to add to cart");
+  }
+};
 
   return (
     <section className="max-w-6xl mx-auto min-h-screen px-4 sm:px-6 py-8 sm:py-10">

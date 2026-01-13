@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
@@ -31,11 +32,21 @@ export const userApi = createApi({
         url: "/logout",
         method: "POST",
       }),
+      invalidatesTags: ["Users"],
     }),
 
     getAllUsers: builder.query({
       query: () => "/getAllUser",
-      providesTags: ["Users"],
+      providesTags: (result) =>
+        result?.users
+          ? [
+              ...result.users.map(({ _id }) => ({
+                type: "User",
+                id: _id,
+              })),
+              "Users",
+            ]
+          : ["Users"],
     }),
 
     getOneUser: builder.query({
@@ -60,17 +71,30 @@ export const userApi = createApi({
         url: `/deleteAuth/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Users"],
+      invalidatesTags: (result, error, id) => [
+        { type: "User", id },
+        "Users",
+      ],
     }),
 
     OrderSaree: builder.mutation({
-      query: (id) => ({
+      query: (sareeId) => ({
         url: "/order",
         method: "PUT",
-        body: { sareeId: id },
+        body: { sareeId },
       }),
-      invalidatesTags: ["Sarees"],
+      invalidatesTags: (result, error, sareeId) => [
+        { type: "Saree", id: sareeId },
+        "Sarees",
+      ],
     }),
+    removerOrderList:builder.mutation({
+         query:(sareeId)=>({
+           url:"/removeOrder",
+           method:"PUT",
+           body:{sareeId}
+         })
+    })
   }),
 });
 
@@ -85,7 +109,16 @@ export const sareeApi = createApi({
   endpoints: (builder) => ({
     getAllSaree: builder.query({
       query: () => "/getAllCards",
-      providesTags: ["Sarees"],
+      providesTags: (result) =>
+        result?.saree
+          ? [
+              ...result.saree.map(({ _id }) => ({
+                type: "Saree",
+                id: _id,
+              })),
+              "Sarees",
+            ]
+          : ["Sarees"],
     }),
 
     getACard: builder.query({
@@ -107,7 +140,10 @@ export const sareeApi = createApi({
         url: `/deleteCard/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Sarees"],
+      invalidatesTags: (result, error, id) => [
+        { type: "Saree", id },
+        "Sarees",
+      ],
     }),
 
     doLike: builder.mutation({
@@ -116,10 +152,14 @@ export const sareeApi = createApi({
         method: "PUT",
         body: { sareeId },
       }),
-      invalidatesTags:["Sarees"]
+      invalidatesTags: (result, error, sareeId) => [
+        { type: "Saree", id: sareeId },
+        "Sarees",
+      ],
     }),
   }),
 });
+
 
 export const {
   useRegisterMutation,
@@ -130,6 +170,7 @@ export const {
   useGetOneUserQuery,
   useUpdateAuthMutation,
   useOrderSareeMutation,
+  useRemoverOrderListMutation
 } = userApi;
 
 export const {
